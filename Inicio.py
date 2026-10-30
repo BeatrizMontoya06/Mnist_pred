@@ -1,6 +1,6 @@
 """
-NEO-MNIST LABS // NEURAL CANVAS STUDIO
-Estética: Minimalismo Geométrico de Alta Precisión & Neo-Brutalism Digital
+📖 EL BOSQUE MÁGICO DE LOS NÚMEROS // CUENTO INTERACTIVO INFANTIL
+Estética: Ilustración de Cuento de Hadas / Acuarela Mágica y Fantasía Infantil
 """
 
 import os
@@ -14,124 +14,119 @@ import pandas as pd
 import platform
 
 st.set_page_config(
-    page_title="NEO-MNIST // Neural Canvas",
-    page_icon="✍️",
+    page_title="El Bosque Mágico de los Números",
+    page_icon="🍄",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# ── Estética Neo-Brutalism & Minimalismo Geométrico ──────────────────────────
+# ── Estética de Cuento Infantil, Acuarela y Fantasía Mágica ────────────────────
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap');
 
     .stApp {
-        background: #f4f4f0;
-        color: #111111;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        background: linear-gradient(180deg, #e0f7fa 0%, #f1f8e9 50%, #fffde7 100%);
+        color: #2c3e50;
+        font-family: 'Quicksand', sans-serif;
     }
 
     header {visibility: hidden;}
 
-    /* Cabecera Principal Minimalista de Autor */
-    .studio-header {
-        border-bottom: 2px solid #111111;
-        padding-bottom: 20px;
+    /* Cabecera estilo Libro de Cuentos Ilustrado */
+    .storybook-header {
+        background: rgba(255, 255, 255, 0.85);
+        border: 4px dashed #81c784;
+        border-radius: 24px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(46, 125, 50, 0.15);
         margin-bottom: 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
     }
 
-    .studio-header h1 {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 2.5rem;
-        font-weight: 800;
-        color: #111111;
-        letter-spacing: -1px;
+    .storybook-header h1 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 2.8rem;
+        color: #2e7d32;
         margin: 0;
+        text-shadow: 2px 2px 0px #c8e6c9;
     }
 
-    .studio-header p {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.85rem;
-        color: #666666;
-        margin: 0;
-        text-transform: uppercase;
+    .storybook-header p {
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #558b2f;
+        margin-top: 10px;
     }
 
-    /* Tarjetas de Contenedores Sólidos (Neo-Brutalism Style) */
-    .neo-card {
-        background: #ffffff;
-        border: 2px solid #111111;
-        border-radius: 8px;
+    /* Tarjetas estilo Cabaña del Bosque / Pergamino Mágico */
+    .fairy-card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 3px solid #aed581;
+        border-radius: 20px;
         padding: 25px;
-        box-shadow: 4px 4px 0px #111111;
+        box-shadow: 0 8px 20px rgba(139, 195, 74, 0.2);
         margin-bottom: 20px;
     }
 
-    .neo-card h3 {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.9rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #111111;
+    .fairy-card h3 {
+        font-family: 'Fredoka One', cursive;
+        font-size: 1.3rem;
+        color: #33691e;
         margin-top: 0;
-        border-bottom: 2px solid #111111;
-        padding-bottom: 8px;
+        border-bottom: 2px dotted #c8e6c9;
+        padding-bottom: 10px;
     }
 
-    /* Botones de Alto Contraste */
+    /* Botones Mágicos Interactivos */
     .stButton>button {
-        background: #111111 !important;
-        color: #ffffff !important;
-        border: 2px solid #111111 !important;
-        border-radius: 6px !important;
-        font-family: 'JetBrains Mono', monospace !important;
-        font-size: 0.85rem !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        padding: 12px 20px !important;
+        background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 50px !important;
+        font-family: 'Fredoka One', cursive !important;
+        font-size: 1rem !important;
+        letter-spacing: 1px !important;
+        padding: 14px 24px !important;
         width: 100% !important;
-        box-shadow: 3px 3px 0px #666666 !important;
-        transition: all 0.1s ease !important;
+        box-shadow: 0 6px 15px rgba(67, 160, 71, 0.4) !important;
+        transition: all 0.3s ease !important;
     }
 
     .stButton>button:hover {
-        background: #ff3333 !important;
-        border-color: #111111 !important;
-        box-shadow: 1px 1px 0px #111111 !important;
-        transform: translate(2px, 2px);
+        background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%) !important;
+        transform: scale(1.03);
+        box-shadow: 0 8px 20px rgba(67, 160, 71, 0.6) !important;
     }
 
-    /* Estilización de Inputs y Métricas */
-    .metric-box {
-        background: #111111;
-        color: #ffffff;
-        padding: 15px;
-        border-radius: 6px;
-        text-align: center;
-        font-family: 'JetBrains Mono', monospace;
+    /* Tarjeta de narración del cuento */
+    .story-bubble {
+        background: #f1f8e9;
+        border: 2px dashed #7cb342;
+        border-radius: 16px;
+        padding: 20px;
+        font-family: 'Quicksand', sans-serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #33691e;
+        line-height: 1.6;
+        margin-top: 15px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Cabecera de Interfaz Única ────────────────────────────────────────────────
+# ── Cabecera del Cuento Mágico ────────────────────────────────────────────────
 st.markdown("""
-<div class="studio-header">
-    <div>
-        <h1>neo-mnist // canvas studio</h1>
-        <p>estación de inferencia y reconocimiento de patrones escritos a mano</p>
-    </div>
-    <div>
-        <p style="text-align: right;">TF v2.x // Keras Core</p>
-    </div>
+<div class="storybook-header">
+    <h1>🍄 El Bosque Mágico de los Números 🌳</h1>
+    <p>¡Ayuda al Duendecillo Sabio a adivinar el número secreto que dibujes con tu varita mágica!</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ── Carga del Modelo MNIST con Manejo de Errores Estilizado ───────────────────
+# ── Carga del Modelo MNIST con Mensajes Temáticos de Fantasía ─────────────────
 @st.cache_resource
-def load_mnist_model():
+def load_fairy_model():
     model_files = ['mnist_model.keras', 'mnist_model.h5']
     for model_path in model_files:
         if os.path.exists(model_path):
@@ -142,99 +137,111 @@ def load_mnist_model():
                 return None, str(e)
     return None, None
 
-model, load_status = load_mnist_model()
+model, load_status = load_fairy_model()
 
 if model is None:
-    st.markdown('<div class="neo-card">', unsafe_allow_html=True)
-    st.error("❌ No se ha detectado ningún núcleo neuronal entrenado en el directorio.")
-    st.info("Coloque un archivo `mnist_model.keras` o `mnist_model.h5` en la raíz del repositorio para habilitar los circuitos de inferencia.")
+    st.markdown('<div class="fairy-card">', unsafe_allow_html=True)
+    st.error("🧚‍♂️ ¡Oh no! El espíritu del bosque no encuentra el pergamino del modelo (`mnist_model.keras`).")
+    st.info("Coloca tu archivo de entrenamiento en la raíz del bosque para despertar la magia de la predicción.")
     st.markdown('</div>', unsafe_allow_html=True)
     st.stop()
 
-# ── Distribución de Paneles de Trabajo ────────────────────────────────────────
-col_canvas, col_control = st.columns([1.2, 1], gap="large")
+# ── Distribución en el Bosque (Lienzo y Consola del Duende) ───────────────────
+col_art, col_quest = st.columns([1.2, 1], gap="large")
 
-with col_canvas:
-    st.markdown('<div class="neo-card">', unsafe_allow_html=True)
-    st.markdown("### 🎨 Lienzo de Inferencia Táctil")
-    st.caption("Dibuja un dígito numérico (0 al 9) dentro del recuadro negro:")
+with col_art:
+    st.markdown('<div class="fairy-card">', unsafe_allow_html=True)
+    st.markdown("### 🎨 El Lienzo Encantado")
+    st.caption("Dibuja un número mágico del 0 al 9 usando tu ratón o dedo como varita:")
     
     canvas_result = st_canvas(
         fill_color="black",
-        stroke_width=24,
+        stroke_width=26,
         stroke_color="white",
         background_color="black",
-        width=320,
-        height=320,
+        width=300,
+        height=300,
         drawing_mode="freedraw",
-        key="canvas_mnist",
+        key="canvas_fairy_forest",
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
-with col_control:
-    st.markdown('<div class="neo-card">', unsafe_allow_html=True)
-    st.markdown("### 🎛️ Consola de Control")
+with col_quest:
+    st.markdown('<div class="fairy-card">', unsafe_allow_html=True)
+    st.markdown("### 🪄 Hechizos y Acciones")
     
-    predict_btn = st.button("⚡ Ejecutar Inferencia de Dígito")
-    clear_btn = st.button("🗑️ Limpiar Área de Dibujo")
+    predict_btn = st.button("✨ ¡Consultar al Duende Sabio!")
+    clear_btn = st.button("🧹 Borrar el Pizarrón Mágico")
     
     if clear_btn:
         st.rerun()
         
     st.markdown("---")
-    st.markdown("<p style='font-family: JetBrains Mono; font-size: 0.8rem;'><b>Estado del Núcleo:</b> Conectado y listo para procesar vectores de entrada de 28x28 píxeles.</p>", unsafe_allow_html=True)
+    st.markdown("""
+    <div style="font-size: 0.9rem; color: #558b2f; line-height: 1.5;">
+    <b>Leyenda del Bosque:</b><br>
+    Cada trazo que dibujas emite un destello de luz que las hadas recolectan para adivinar el mensaje secreto del número.
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# ── Lógica de Predicción y Procesamiento de Imagen ───────────────────────────
+# ── Lógica Mágica de Inferencia y Narrativa de Cuento ────────────────────────
 if predict_btn:
     if canvas_result.image_data is not None:
         if np.max(canvas_result.image_data) == 0:
-            st.warning("⚠️ El lienzo se encuentra vacío. Por favor, dibuja un dígito antes de procesar.")
+            st.warning("🍃 ¡El lienzo está vacío! Las hadas necesitan ver un número dibujado para cantar su respuesta.")
         else:
-            with st.spinner("Procesando matriz tensorial..."):
-                # Conversión y redimensionamiento exacto para MNIST
+            with st.spinner("✨ Las estrellas fugaces están descifrando tu dibujo..."):
                 image = Image.fromarray(canvas_result.image_data.astype("uint8")).convert("L")
                 image_resized = image.resize((28, 28), Image.Resampling.LANCZOS)
                 
                 img_array = np.array(image_resized) / 255.0
                 img_array = img_array.reshape(1, 28, 28, 1)
                 
-                # Inferencia con el modelo cargado
                 prediction = model.predict(img_array, verbose=0)
                 digit = np.argmax(prediction)
                 confidence = np.max(prediction) * 100
                 alternative = np.argsort(prediction[0])[-2]
 
-            # ── Resultados Visuales Estilizados ──────────────────────────────
-            st.markdown('<div class="neo-card">', unsafe_allow_html=True)
-            st.markdown("### 📊 Reporte de Análisis Neuronal")
+            # ── Cuento de Resultados Mágico ──────────────────────────────────
+            st.markdown('<div class="fairy-card">', unsafe_allow_html=True)
+            st.markdown("### 📖 Capítulo Revelado: El Mensaje del Bosque")
             
-            res_col1, res_col2, res_col3 = st.columns(3)
-            with res_col1:
-                st.metric(label="Predicción Principal", value=str(digit))
-            with res_col2:
-                st.metric(label="Nivel de Confianza", value=f"{confidence:.1f}%")
-            with res_col3:
-                st.metric(label="Alternativa Probable", value=str(alternative))
+            st.markdown(
+                f'<div class="story-bubble">'
+                f'🌲✨ ¡El anciano búho del gran árbol ha hablado! Tras mirar atentamente tu trazo magico, '
+                f'ha descubierto que dibujaste el número <b>{digit}</b> con una seguridad del <b>{confidence:.1f}%</b>. '
+                f'Los duendes celebran bailando en círculo bajo los hongos luminosos.'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            c_m1, c_m2, c_m3 = st.columns(3)
+            with c_m1:
+                st.metric(label="Número Encontrado", value=str(digit))
+            with c_m2:
+                st.metric(label="Magia Revelada", value=f"{confidence:.1f}%")
+            with c_m3:
+                st.metric(label="Adivinanza Vecina", value=str(alternative))
             
             st.markdown("---")
-            
-            # Gráfico de probabilidades minimalista
+            st.markdown("#### 📊 El Coro de los Animales del Bosque (Probabilidades)")
             prob_df = pd.DataFrame({
-                'Dígito': [str(i) for i in range(10)],
-                'Probabilidad (%)': prediction[0] * 100
+                'Número': [str(i) for i in range(10)],
+                'Canto (%)': prediction[0] * 100
             })
-            st.bar_chart(prob_df.set_index('Dígito'), color="#111111")
+            st.bar_chart(prob_df.set_index('Número'), color="#66bb6a")
             
-            # Comparativa de transformaciones
-            sub_c1, sub_c2 = st.columns(2)
-            with sub_c1:
-                st.write("**Muestra Original Vectorizada:**")
-                st.image(canvas_result.image_data, width=150)
-            with sub_c2:
-                st.write("**Entrada Normalizada (28x28):**")
-                st.image(image_resized, width=150)
+            fairy_c1, fairy_c2 = st.columns(2)
+            with fairy_c1:
+                st.write("**Tu dibujo original en el claro del bosque:**")
+                st.image(canvas_result.image_data, width=140)
+            with fairy_c2:
+                st.write("**La esencia pura del número (28x28):**")
+                st.image(image_resized, width=140)
                 
             st.markdown('</div>', unsafe_allow_html=True)
     else:
-        st.warning("⚠️ No se detectaron datos en el lienzo de dibujo.")
+        st.warning("⚠️ No se encontraron huellas de magia en el lienzo.")
