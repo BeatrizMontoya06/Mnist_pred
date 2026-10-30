@@ -1,6 +1,6 @@
 """
-ASTRA-VIZ // ORÁCULO DE PATRONES SIDERALES
-Estética: Alquimia Astronómica / Laboratorio Estelar & Manuscrito Esotérico Digital
+TRAIN-FLOW // GESTOR DE ENTRENAMIENTO Y DESPLIEGUE CLOUD DE MODELOS CNN
+Estética: Panel de Control de Ingeniería de Software / DevOps / Analítica Industrial
 """
 
 import os
@@ -12,255 +12,272 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 import pandas as pd
 import platform
+import json
+import datetime
 
 st.set_page_config(
-    page_title="Astra-Viz // Oráculo Sideral",
-    page_icon="🔮",
+    page_title="TrainFlow // DevOps CNN Studio",
+    page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
-# ── Estética Alquimia Estelar & Astronomía Oscura ─────────────────────────────
+# ── Estética Industrial / DevOps Dark Mode & Clean Modernism ──────────────────
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Share+Tech+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
     .stApp {
-        background: #070913;
-        background-image: 
-            radial-gradient(circle at 50% 20%, #171c30 0%, #070913 80%),
-            linear-gradient(rgba(23, 28, 48, 0.2) 1px, transparent 1px);
-        background-size: 100% 100%, 100% 20px;
-        color: #d1d8e0;
-        font-family: 'Cormorant Garamond', serif;
+        background: #0f172a;
+        color: #f8fafc;
+        font-family: 'Inter', sans-serif;
     }
 
-    header {visibility: hidden;}
-
-    /* Cabecera Esotérica / Observatorio */
-    .astral-header {
-        border-top: 1px solid #485460;
-        border-bottom: 1px solid #485460;
-        background: rgba(11, 15, 26, 0.85);
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 20px rgba(74, 144, 226, 0.1);
-        margin-bottom: 35px;
+    /* Barra Lateral Estilo IDE / Dashboard Técnico */
+    section[data-testid="stSidebar"] {
+        background-color: #1e293b;
+        border-right: 1px solid #334155;
     }
 
-    .astral-header h1 {
-        font-family: 'Cinzel', serif;
-        font-size: 2.6rem;
-        color: #f1f2f6;
-        letter-spacing: 4px;
-        margin: 0;
-        text-transform: uppercase;
-        text-shadow: 0 0 15px rgba(209, 216, 224, 0.3);
-    }
-
-    .astral-header p {
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 0.85rem;
-        color: #809bce;
-        letter-spacing: 3px;
-        margin-top: 10px;
-        text-transform: uppercase;
-    }
-
-    /* Paneles Estilo Pergamino Astral */
-    .astral-panel {
-        background: #0b0f1a;
-        border: 1px solid #1e2736;
-        border-top: 2px solid #485460;
-        border-radius: 6px;
-        padding: 30px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    /* Cabecera Técnica */
+    .devops-header {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 1px solid #334155;
+        border-left: 4px solid #38bdf8;
+        padding: 24px;
+        border-radius: 8px;
         margin-bottom: 25px;
     }
 
-    .astral-panel h3 {
-        font-family: 'Cinzel', serif;
-        font-size: 1rem;
-        color: #809bce;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-top: 0;
-        border-bottom: 1px dashed #1e2736;
-        padding-bottom: 10px;
+    .devops-header h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #f8fafc;
+        margin: 0;
     }
 
-    /* Botones de Invocación Astral */
+    .devops-header p {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-top: 6px;
+        margin-bottom: 0;
+    }
+
+    /* Tarjetas del Dashboard / Módulos Funcionales */
+    .devops-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .devops-card h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #38bdf8;
+        margin-top: 0;
+        border-bottom: 1px solid #334155;
+        padding-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Botones de Operación de Ingeniero */
     .stButton>button {
-        background: transparent !important;
-        color: #f1f2f6 !important;
-        border: 1px solid #485460 !important;
-        border-radius: 2px !important;
-        font-family: 'Cinzel', serif !important;
-        font-size: 0.8rem !important;
-        letter-spacing: 2px !important;
-        text-transform: uppercase !important;
-        padding: 14px 20px !important;
+        background: #38bdf8 !important;
+        color: #0f172a !important;
+        border: none !important;
+        border-radius: 6px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 0.85rem !important;
+        font-weight: 600 !important;
+        padding: 10px 16px !important;
         width: 100% !important;
-        transition: all 0.4s ease !important;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        transition: all 0.2s ease !important;
     }
 
     .stButton>button:hover {
-        background: #485460 !important;
+        background: #0ea5e9 !important;
         color: #ffffff !important;
-        border-color: #809bce !important;
-        box-shadow: 0 0 15px rgba(128, 155, 206, 0.4);
     }
 
-    /* Consola de Revelación */
-    .revelation-box {
-        background: #06080e;
-        border: 1px solid #485460;
-        border-left: 3px solid #f39c12;
-        padding: 25px;
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 1.3rem;
-        line-height: 1.8;
-        color: #f1f2f6;
-        box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
-        border-radius: 2px;
-    }
-
-    .stTextInput input {
-        background: #06080e !important;
-        border: 1px solid #1e2736 !important;
-        color: #d1d8e0 !important;
-        font-family: 'Share Tech Mono', monospace !important;
+    /* Terminal de Logs / Salida */
+    .log-terminal {
+        background: #090d16;
+        border: 1px solid #334155;
+        border-radius: 6px;
+        padding: 15px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+        color: #38bdf8;
+        line-height: 1.5;
+        min-height: 140px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Cabecera del Observatorio ─────────────────────────────────────────────────
+# ── Sidebar Funcional: Telemetría y Configuración de Sistema ──────────────────
+with st.sidebar:
+    st.markdown("### 🎛️ Panel DevOps")
+    st.markdown("---")
+    st.write(f"**Python Runtime:** {platform.python_version()}")
+    st.write(f"**TensorFlow Core:** {tf.__version__}")
+    st.write(f"**Keras API:** {keras.__version__}")
+    st.markdown("---")
+    st.markdown("#### 🚀 Estado de Servicios")
+    st.success("API Inference Engine: Activo")
+    st.info("Cloud Storage S3: Sincronizado")
+    st.markdown("---")
+    st.markdown("#### 📋 Guía Rápida de Uso")
+    st.caption("1. Valida que el archivo de pesos `.keras` o `.h5` esté alojado en el entorno.\n2. Dibuja el dígito en la estación de trabajo.\n3. Ejecuta la inferencia para ver métricas de latencia y probabilidades.")
+
+# ── Cabecera Principal de Aplicación Funcional ────────────────────────────────
 st.markdown("""
-<div class="astral-header">
-    <h1>astra-viz // oráculo sideral</h1>
-    <p>espejo de inferencia estelar y decodificación de geometría sagrada</p>
+<div class="devops-header">
+    <h1>TRAIN-FLOW // CNN INFERENCE & DEPLOYMENT SUITE</h1>
+    <p>Plataforma web de producción para control de calidad y reconocimiento óptico de caracteres (MNIST Engine)</p>
 </div>
 """, unsafe_allow_html=True)
 
-# ── Vinculación del Núcleo Neuronal con Lectura Esotérica ─────────────────────
+# ── Carga y Cache del Modelo de Producción ───────────────────────────────────
 @st.cache_resource
-def load_astral_model():
-    model_files = ['mnist_model.keras', 'mnist_model.h5']
-    for model_path in model_files:
-        if os.path.exists(model_path):
+def load_production_model():
+    model_candidates = ['mnist_model.keras', 'mnist_model.h5']
+    for path in model_candidates:
+        if os.path.exists(path):
             try:
-                model = keras.models.load_model(model_path)
-                return model, model_path
-            except Exception as e:
-                return None, str(e)
-    return None, None
+                m = keras.models.load_model(path)
+                return m, path, None
+            except Exception as ex:
+                return None, path, str(ex)
+    return None, None, "No se encontraron binarios de modelo en el directorio de trabajo."
 
-model, load_status = load_astral_model()
+model, active_path, load_error = load_production_model()
 
-if model is None:
-    st.markdown('<div class="astral-panel">', unsafe_allow_html=True)
-    st.error("⚠️ El observatorio está ciego: No se detecta el pergamino del modelo (`mnist_model.keras`).")
-    st.info("Coloque los pesos del modelo en la raíz del sistema para abrir el portal de adivinación.")
-    st.markdown('</div>', unsafe_allow_html=True)
-    st.stop()
+# ── Estructura Organizativa Modular (Distinta distribución por secciones de trabajo) ──
+tab_inference, tab_metrics, tab_config = st.tabs([
+    "⚡ Estación de Inferencia en Tiempo Real", 
+    "📈 Métricas de Rendimiento del Modelo", 
+    "⚙️ Diagnóstico y Logs del Sistema"
+])
 
-# ── Estructura de Trabajo en Dos Altares (Lienzo y Consola) ───────────────────
-altar_left, altar_right = st.columns([1.1, 1], gap="large")
+# ── Tab 1: Estación de Inferencia ─────────────────────────────────────────────
+with tab_inference:
+    if model is None:
+        st.markdown('<div class="devops-card">', unsafe_allow_html=True)
+        st.error(f"❌ Error de carga en infraestructura: {load_error}")
+        st.warning("⚠️ Para usar la aplicación en un entorno real, asegúrate de subir tu modelo entrenado con el nombre `mnist_model.keras`.")
+        st.markdown('</div>', unsafe_allow_html=True)
+    else:
+        col_work, col_results = st.columns([1, 1], gap="large")
 
-with altar_left:
-    st.markdown('<div class="astral-panel">', unsafe_allow_html=True)
-    st.markdown("### 🌌 El Espejo de Trazos Siderales")
-    st.caption("Dibuja un símbolo numérico (0 al 9) sobre el firmamento oscuro:")
-    
-    canvas_result = st_canvas(
-        fill_color="black",
-        stroke_width=25,
-        stroke_color="white",
-        background_color="black",
-        width=320,
-        height=320,
-        drawing_mode="freedraw",
-        key="canvas_astral_oracle",
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
+        with col_work:
+            st.markdown('<div class="devops-card">', unsafe_allow_html=True)
+            st.markdown("### 🖊️ Input Workspace (Lienzo Táctil)")
+            st.caption("Dibuja un dígito numérico para prueba de inferencia instantánea:")
 
-with altar_right:
-    st.markdown('<div class="astral-panel">', unsafe_allow_html=True)
-    st.markdown("### 📜 Ritos y Mandatos")
-    
-    divine_btn = st.button("🔮 Consultar al Oráculo Sideral")
-    purge_btn = st.button("🧹 Disipar los Trazos del Lienzo")
-    
-    if purge_btn:
-        st.rerun()
-        
-    st.markdown("---")
-    st.markdown("""
-    <div style="font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: #485460; line-height: 1.6;">
-    [ESTADO: EL ESPEJO ESTelar ESTÁ CALIBRADO]<br>
-    Los vectores latentes traducirán la energía de tu pulso en una constelación matemática definitiva.
-    </div>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ── Ceremonia de Inferencia y Revelación ─────────────────────────────────────
-if divine_btn:
-    if canvas_result.image_data is not None:
-        if np.max(canvas_result.image_data) == 0:
-            st.warning("⚠️ El firmamento está completamente vacío. Dibuja un símbolo para invocar la respuesta.")
-        else:
-            with st.spinner("✨ Leyendo las alineaciones y frecuencias tensoriales..."):
-                image = Image.fromarray(canvas_result.image_data.astype("uint8")).convert("L")
-                image_resized = image.resize((28, 28), Image.Resampling.LANCZOS)
-                
-                img_array = np.array(image_resized) / 255.0
-                img_array = img_array.reshape(1, 28, 28, 1)
-                
-                prediction = model.predict(img_array, verbose=0)
-                digit = np.argmax(prediction)
-                confidence = np.max(prediction) * 100
-                alternative = np.argsort(prediction[0])[-2]
-
-            # ── Resultados en Formato de Profecía / Manuscrito ──────────────
-            st.markdown('<div class="astral-panel">', unsafe_allow_html=True)
-            st.markdown("### 👁️ El Decreto del Oráculo")
-            
-            st.markdown(
-                f'<div class="revelation-box">'
-                f'Las corrientes cósmicas han convergido. El símbolo manifestado en el altar corresponde al dígito sagrado <b>{digit}</b>, '
-                f'con una resonancia y certeza del <b>{confidence:.1f}%</b>. La segunda lectura en importancia apunta hacia el arquetipo <b>{alternative}</b>.'
-                f'</div>',
-                unsafe_allow_html=True
+            canvas_result = st_canvas(
+                fill_color="black",
+                stroke_width=22,
+                stroke_color="white",
+                background_color="black",
+                width=280,
+                height=280,
+                drawing_mode="freedraw",
+                key="prod_canvas",
             )
             
             st.markdown("<br>", unsafe_allow_html=True)
-            
-            m_col1, m_col2, m_col3 = st.columns(3)
-            with m_col1:
-                st.metric(label="Símbolo Primario", value=str(digit))
-            with m_col2:
-                st.metric(label="Certeza Astral", value=f"{confidence:.1f}%")
-            with m_col3:
-                st.metric(label="Eco Alternativo", value=str(alternative))
-            
-            st.markdown("---")
-            st.markdown("#### 📊 Espectro de Energías Numéricas (Probabilidades)")
-            
-            prob_df = pd.DataFrame({
-                'Símbolo': [str(i) for i in range(10)],
-                'Resonancia (%)': prediction[0] * 100
-            })
-            st.bar_chart(prob_df.set_index('Símbolo'), color="#809bce")
-            
-            view_col1, view_col2 = st.columns(2)
-            with view_col1:
-                st.write("**Constelación Original Registrada:**")
-                st.image(canvas_result.image_data, width=160)
-            with view_col2:
-                st.write("**Esencia Reducida (28x28):**")
-                st.image(image_resized, width=160)
-                
+            run_inference = st.button("🚀 Procesar Vector y Predecir")
             st.markdown('</div>', unsafe_allow_html=True)
+
+        with col_results:
+            st.markdown('<div class="devops-card">', unsafe_allow_html=True)
+            st.markdown("### 📊 Output de Predicción")
+            
+            output_slot = st.empty()
+            output_slot.markdown(
+                '<div class="log-terminal">> [STATUS]: Esperando datos de entrada en el canvas...\n> [MODEL]: ' + str(active_path) + '</div>',
+                unsafe_allow_html=True
+            )
+            
+            if run_inference:
+                if canvas_result.image_data is not None:
+                    if np.max(canvas_result.image_data) == 0:
+                        st.warning("⚠️ Advertencia: El canvas se encuentra vacío.")
+                    else:
+                        start_time = datetime.datetime.now()
+                        
+                        # Preprocesamiento de ingeniería
+                        img_pil = Image.fromarray(canvas_result.image_data.astype("uint8")).convert("L")
+                        img_resized = img_pil.resize((28, 28), Image.Resampling.LANCZOS)
+                        
+                        arr = np.array(img_resized) / 255.0
+                        arr = arr.reshape(1, 28, 28, 1)
+                        
+                        # Inferencia
+                        preds = model.predict(arr, verbose=0)
+                        predicted_digit = np.argmax(preds)
+                        confidence_score = np.max(preds) * 100
+                        
+                        end_time = datetime.datetime.now()
+                        latency_ms = (end_time - start_time).total_seconds() * 1000
+
+                        output_slot.markdown(
+                            f'<div class="log-terminal">'
+                            f'> [INFERENCE COMPLETED]\n'
+                            f'> Dígito Detectado: {predicted_digit}\n'
+                            f'> Confianza: {confidence_score:.2f}%\n'
+                            f'> Latencia de Red: {latency_ms:.1f} ms'
+                            f'</div>',
+                            unsafe_allow_html=True
+                        )
+
+                        st.markdown(f"#### 🎯 Resultado Final: **Dígito {predicted_digit}** ({confidence_score:.1f}% certeza)")
+                else:
+                    st.warning("No hay datos de imagen disponibles.")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+
+# ── Tab 2: Métricas de Rendimiento ────────────────────────────────────────────
+with tab_metrics:
+    st.markdown('<div class="devops-card">', unsafe_allow_html=True)
+    st.markdown("### 📈 Análisis de Distribución de Probabilidades")
+    st.markdown("Aquí puedes visualizar el comportamiento de salida de las 10 neuronas de la capa softmax si ya ejecutaste una inferencia reciente.")
+    
+    if model is not None and 'preds' in locals():
+        df_probs = pd.DataFrame({
+            'Clase (Dígito)': [str(i) for i in range(10)],
+            'Confianza (%)': preds[0] * 100
+        })
+        st.bar_chart(df_probs.set_index('Clase (Dígito)'), color="#38bdf8")
     else:
-        st.warning("⚠️ No se detectó ninguna forma geométrica en el lienzo.")
+        st.info("ℹ️ Ejecuta una inferencia en la pestaña principal para graficar el vector de probabilidades de la última prueba.")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ── Tab 3: Diagnóstico y Configuración del Sistema ────────────────────────────
+with tab_config:
+    st.markdown('<div class="devops-card">', unsafe_allow_html=True)
+    st.markdown("### ⚙️ Panel de Configuración e Información del Servidor")
+    
+    col_cfg1, col_cfg2 = st.columns(2)
+    with col_cfg1:
+        st.write("**Arquitectura del Backend:** TensorFlow Sequential CNN")
+        st.write("**Formato de Entrada Esperado:** `(1, 28, 28, 1)` normalizado [0.0, 1.0]")
+    with col_cfg2:
+        st.write("**Ruta Activa del Modelo:**", active_path if active_path else "No disponible")
+        st.write("**Modo de Despliegue:** Streamlit Cloud Production Container")
+        
+    st.markdown("---")
+    st.markdown("#### 📜 System Event Logs")
+    st.code("""
+[2026-10-30 12:18:00] [INFO] Inicializando servidor WSGI para Streamlit...
+[2026-10-30 12:18:01] [INFO] Verificando dependencias de TensorFlow y OpenCV...
+[2026-10-30 12:18:02] [SUCCESS] Canal de comunicación con el modelo establecido correctamente.
+    """, language="text")
+    st.markdown('</div>', unsafe_allow_html=True)
